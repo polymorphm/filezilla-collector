@@ -79,7 +79,7 @@ def filezilla_collector(
         log('processing file {path!r}...'.format(path=path), end=' ')
         try:
             xml_lines = []
-            with open(path, 'r') as fd:
+            with open(path, 'r', encoding='utf-8', errors='replace', newline='\n') as fd:
                 for line in fd:
                     xml_lines.append(line)
             
@@ -110,7 +110,7 @@ def filezilla_collector(
             log('PASS')
     
     log('writing out {path!r}...'.format(path=out), end=' ')
-    with open(out, 'w') as fd:
+    with open(out, 'w', encoding='utf-8', errors='replace', newline='\n') as fd:
         fd.write('<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>\n')
         fd.write('<FileZilla3>\n')
         fd.write('    <Queue>\n')
