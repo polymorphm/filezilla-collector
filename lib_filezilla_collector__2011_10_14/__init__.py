@@ -89,10 +89,14 @@ def filezilla_collector(
                 raise FilezillaCollectorValueError()
             if '<FileZilla3>' not in xml_lines[1]:
                 raise FilezillaCollectorValueError()
+            if '<Queue>' not in xml_lines[2]:
+                raise FilezillaCollectorValueError()
             if '</FileZilla3>' not in xml_lines[-1]:
                 raise FilezillaCollectorValueError()
+            if '</Queue>' not in xml_lines[-2]:
+                raise FilezillaCollectorValueError()
             
-            out_lines += xml_lines[2:-1]
+            out_lines += xml_lines[3:-2]
         except (FilezillaCollectorValueError, EnvironmentError):
             log('ERROR')
             from traceback import print_exc
@@ -104,7 +108,9 @@ def filezilla_collector(
     with open(out, 'w') as fd:
         fd.write('<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>\n')
         fd.write('<FileZilla3>\n')
+        fd.write('    <Queue>\n')
         for line in out_lines:
             fd.write('{}'.format(line))
+        fd.write('    </Queue>\n')
         fd.write('</FileZilla3>\n')
     log('PASS')
