@@ -85,15 +85,20 @@ def filezilla_collector(
             
             if not xml_lines:
                 raise FilezillaCollectorValueError()
-            if '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>' not in xml_lines[0]:
+            if len(xml_lines[0]) >= 100 or \
+                    '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>' not in xml_lines[0]:
                 raise FilezillaCollectorValueError()
-            if '<FileZilla3>' not in xml_lines[1]:
+            if len(xml_lines[1]) >= 20 or \
+                    '<FileZilla3>' not in xml_lines[1]:
                 raise FilezillaCollectorValueError()
-            if '<Queue>' not in xml_lines[2]:
+            if len(xml_lines[2]) >= 20 or \
+                    '<Queue>' not in xml_lines[2]:
                 raise FilezillaCollectorValueError()
-            if '</FileZilla3>' not in xml_lines[-1]:
+            if len(xml_lines[-1]) >= 20 or \
+                    '</FileZilla3>' not in xml_lines[-1]:
                 raise FilezillaCollectorValueError()
-            if '</Queue>' not in xml_lines[-2]:
+            if len(xml_lines[-2]) >= 20 or \
+                    '</Queue>' not in xml_lines[-2]:
                 raise FilezillaCollectorValueError()
             
             out_lines += xml_lines[3:-2]
